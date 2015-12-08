@@ -1,1 +1,1 @@
-# game-of-life-opencl
+# Conway's Game of Life in Cuda

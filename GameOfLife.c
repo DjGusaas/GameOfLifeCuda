@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
- 
+
+// Taken from: http://rosettacode.org/wiki/Conway's_Game_of_Life#C
+
 #define for_x for (int x = 0; x < w; x++)
 #define for_y for (int y = 0; y < h; y++)
 #define for_xy for_x for_y

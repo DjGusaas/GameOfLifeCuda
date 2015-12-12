@@ -6,11 +6,11 @@ void print_matrix(int *mat, int h, int w)
 {
 	printf("\n");
 	
-	for (int y = 0; y < h; y++) 	
+	for (int x = 0; x < w; x++) 	
 	{
-		for (int x = 0; x < w; x++)
+		for (int y = 0; y < h; y++)
 		{
-			printf("%d", *((mat + y * w) + x));
+			printf("%d", *((mat + x * h) + y));
 		}
 
 		printf("\n");
@@ -19,21 +19,21 @@ void print_matrix(int *mat, int h, int w)
 
 int main()
 {
-	int h, w;
+	int w, h;
 
-	printf("Enter desired height of 2d array:\n");   
-	scanf("%d", &h);
-
-	printf("Enter desired width of 2d array:\n");
+	printf("Enter desired width of 2d array:\n");   
 	scanf("%d", &w);
 
-	int mat[h][w];
+	printf("Enter desired height of 2d array:\n");
+	scanf("%d", &h);
 
-	for (int y = 0; y < h; y++)
+	int mat[w][h];
+
+	for (int x = 0; x < w; x++)
  	{
-		for (int x = 0; x < w; x++)
+		for (int y = 0; y < h; y++)
 	 	{
-			mat[y][x] = rand() % 2;
+			mat[x][y] = rand() % 2;
 		}
 	}
 

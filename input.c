@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <unistd.h>
 
-void print_matrix(void *m, int h, int w)
+void print_matrix(int *mat, int h, int w)
 {
 	printf("\n");
-
-	int (*mat)[w] = m;
 	
 	for (int y = 0; y < h; y++) 	
 	{
 		for (int x = 0; x < w; x++)
 		{
-			printf("%d", mat[y][x]);
+			printf("%d", *((mat + y * w) + x));
 		}
 
 		printf("\n");
@@ -36,12 +33,12 @@ int main()
  	{
 		for (int x = 0; x < w; x++)
 	 	{
-			mat[y][x] = 0;
+			mat[y][x] = rand() % 2;
 		}
 	}
 
 	printf("Value at (0, 1) = %d\n", mat[0][1]);
-	print_matrix(mat, h, w);
+	print_matrix((int *)mat, h, w);
 
 	return 0;
 }

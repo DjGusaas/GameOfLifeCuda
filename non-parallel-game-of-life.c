@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void print_matrix(int *univ, int h, int w)
 {
@@ -14,11 +15,14 @@ void print_matrix(int *univ, int h, int w)
 
 		printf("\n");
 	}
+
+	printf("\n");
 }
 
 void generate(int g, int h, int w)
 {
 	int univ[h][w];
+	int alive;
 	int size = h * w;
 
 	for (int y = 0; y < h; y++)
@@ -29,6 +33,9 @@ void generate(int g, int h, int w)
 		}
 	}
 
+	printf("Initial state:");
+	print_matrix((int *)univ, h, w);
+
 	int new_univ[h][w];
 
 	while(g > 0)
@@ -37,13 +44,29 @@ void generate(int g, int h, int w)
 		{
 			for (int x = 0; x < h; x++)
 			{
-				alive = univ[][] + univ[y][x]
+				int x_left = ;
+				int x_right = ;
+				int y_up = ;
+				int y_down ;
 
-				new_univ[y][x] = 	alive == 3 || ( alive == 2 && );
+				alive = univ[y + 1][x - 1] + univ[y + 1][x] + univ[y + 1][x + 1] +
+								univ[y][x - 1] + univ[y][x + 1] +
+								univ[y - 1][x - 1] + univ[y + 1][x] + univ[y + 1][x + 1];
+
+				new_univ[y][x] = 	(alive == 3 || ( alive == 2 && univ[y][x]) ? 1 : 0);
 			}
 		}
+		
+		printf("Generation %d", g);
+		print_matrix((int *)new_univ, h, w);
 
-		print_matrix((int *)new-univ, h, w);
+		int i;
+		for (i = 0; i < h; i++)
+		{
+			memcpy(&univ[i], &new_univ[i], sizeof(new_univ[i]));
+		}
+
+		print_matrix((int *)new_univ, h, w);
 		g--;
 	}
 }

@@ -19,6 +19,7 @@ void print_matrix(int *univ, int h, int w)
 void generate(int g, int h, int w)
 {
 	int univ[h][w];
+	int size = h * w;
 
 	for (int y = 0; y < h; y++)
 	{
@@ -28,11 +29,21 @@ void generate(int g, int h, int w)
 		}
 	}
 
+	int new_univ[h][w];
+
 	while(g > 0)
 	{
-		// TODO
+		for (int y = 0; y < h; y++)
+		{
+			for (int x = 0; x < h; x++)
+			{
+				alive = univ[][] + univ[y][x]
 
-		print_matrix((int *)univ, h, w);
+				new_univ[y][x] = 	alive == 3 || ( alive == 2 && );
+			}
+		}
+
+		print_matrix((int *)new-univ, h, w);
 		g--;
 	}
 }

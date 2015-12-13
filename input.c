@@ -21,10 +21,10 @@ int main()
 {
 	int w, h;
 
-	printf("Enter desired width of 2d array:\n");   
+	printf("Enter desired height of 2d array:\n");   
 	scanf("%d", &w);
 
-	printf("Enter desired height of 2d array:\n");
+	printf("Enter desired width of 2d array:\n");
 	scanf("%d", &h);
 
 	int mat[w][h];

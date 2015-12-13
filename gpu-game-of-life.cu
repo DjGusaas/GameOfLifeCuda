@@ -16,9 +16,9 @@ __global__ void cell(int *univ, int h, int w)
 		int y_above = (y_pos + num_cells - w) % num_cells;
 		int y_below = (y_pos + num_cells) % num_cells;
 
-		int alive = univ[y_above][x_left] + univ[y_above][x_pos] + univ[y_above][x_right] +
-								univ[y_pos][x_left] + univ[y_pos][x_right] +
-								univ[y_below][x_left] + univ[y_below][x_pos] + univ[y_below][x_right];
+		int alive = univ[y_above][x_left] + univ[y_above][x_pos] + univ[y_above][x_right] + 
+						univ[y_pos][x_left] + univ[y_pos][x_right] + 
+						univ[y_below][x_left] + univ[y_below][x_pos] + univ[y_below][x_right];
 
 		new_univ[y_pos][x_pos] = alive == 3 || (alive == 2 && univ[y_pos][x_pos]) ? 1 : 0;
 	}

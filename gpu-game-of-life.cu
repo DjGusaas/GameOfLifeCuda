@@ -1,64 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__global__ void cell(int *univ, int h, int w)
+__global__ void cell_kernel(int univ[], int h, int w)
 {
-	int id = blockIdx.x * blockDim.x + threadIdx.x;
+	int id = __mul24(blockIdx.x, blockDim.x) + threadIdx.x;
 	int num_cells = h * w;
-	// declare univ
 
 	for (id; id < num_cells; id += blockDim.x * gridDim.x) 
 	{
-		int x_pos = id % w;
-		int y_pos = id - x_pos;
-		int x_left = (x + w - 1) % w;
-		int x_right = (x + 1) % w;
-		int y_above = (y_pos + num_cells - w) % num_cells;
-		int y_below = (y_pos + num_cells) % num_cells;
+		unsigned x_pos = id % w;
+		unsigned y_pos = id - x_pos;
+		unsigned x_left = (x_pos + w - 1) % w;
+		unsigned x_right = (x_pos + 1) % w;
+		unsigned y_above = (y_pos + num_cells - w) % num_cells;
+		unsigned y_below = (y_pos + num_cells) % num_cells;
 
-		int alive = univ[y_above][x_left] + univ[y_above][x_pos] + univ[y_above][x_right] + 
-						univ[y_pos][x_left] + univ[y_pos][x_right] + 
-						univ[y_below][x_left] + univ[y_below][x_pos] + univ[y_below][x_right];
+		int alive = univ[x_left + y_above] + univ[x_pos + y_above] + univ[x_right + y_above] + univ[x_left + y_pos] + univ[x_right + y_pos] + univ[x_left + y_below] + univ[x_pos + y_below] + univ[x_right + y_below];
 
-		new_univ[y_pos][x_pos] = alive == 3 || (alive == 2 && univ[y_pos][x_pos]) ? 1 : 0;
+		new_univ[x_pos + y_pos] = alive == 3 || (alive == 2 && univ[x_pos + y_pos]) ? 1 : 0;
 	}
 }
 
-void print_matrix(int *univ, int h, int w)
-{
-	// http://www.geeksforgeeks.org/pass-2d-array-parameter-c/
-	// Credit to the above for demonstrating how to pass around 2d arrays
-	
+void print_array(int univ[], int size)
+{	
   printf("\n");
 
-  for (int y = 0; y < h; y++)
+  for (int i = 0; i < size; i++)
   {
-    for (int x = 0; x < w; x++)
-    {
-      printf("%d", *((univ + y * w) + x));
-    }
-
-    printf("\n");
+    printf("%d", univ[i]);
   }
+
+  printf("\n");
 }
 
 void generate(int g, int h, int w)
 {
-	int univ[h][w];
+	int size = h * w;
+	int univ[size];
 	
-	for (int y = 0; y < h; y++) 
+	for (int i = 0; i < size; i++) 
 	{
-		for (int x = 0; x < w; x++) 
-		{
-			univ[y][x] = rand() % 2;
-		}
+		univ[i] = rand() % 2;
 	}
 
 	while(g > 0)
 	{
-		// TODO		
+		size_t t = (size) / 256;
+		unsigned blocks_count = (unsigned)std::min((size_t)32768, t);
 
-		print_matrix((int *)univ, h, w);
+		d_ ;
+		d_ ;
+
+		cell_kernel<<<blocks_count, 256>>>( , unsigned(w), unsigned(h), );
+
+		print_array(univ, size);
 		g--;
 	}
 }

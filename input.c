@@ -2,24 +2,21 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-void print_matrix(int *mat, int h, int w)
-{
-	printf("\n");
-	
-	for (int x = 0; x < w; x++) 	
-	{
-		for (int y = 0; y < h; y++)
-		{
-			printf("%d", *((mat + x * h) + y));
-		}
+void print_array(int univ[], int size)
+{	
+  printf("\n");
 
-		printf("\n");
-	}
+  for (int i = 0; i < size; i++)
+  {
+    printf("%d", univ[i]);
+  }
+
+  printf("\n");
 }
 
 int main()
 {
-	int w, h;
+	int w, h, size;
 
 	printf("Enter desired height of 2d array:\n");   
 	scanf("%d", &w);
@@ -27,18 +24,16 @@ int main()
 	printf("Enter desired width of 2d array:\n");
 	scanf("%d", &h);
 
-	int mat[w][h];
+	size = w * h;
+	int mat[size];
 
-	for (int x = 0; x < w; x++)
+	for (int i = 0; i < size; i++)
  	{
-		for (int y = 0; y < h; y++)
-	 	{
-			mat[x][y] = rand() % 2;
-		}
+		mat[i] = rand() % 2;
 	}
 
-	printf("Value at (0, 1) = %d\n", mat[0][1]);
-	print_matrix((int *)mat, h, w);
+	printf("Value at (0, 1) = %d\n", mat[1]);
+	print_array(mat, size);
 
 	return 0;
 }

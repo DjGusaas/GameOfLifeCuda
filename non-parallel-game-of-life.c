@@ -42,28 +42,56 @@ void generate(int g, int h, int w)
 	{
 		for (int y = 0; y < h; y++)
 		{
-			for (int x = 0; x < h; x++)
+			for (int x = 0; x < w; x++)
 			{
-				int x_left = ;
-				int x_right = ;
-				int y_up = ;
-				int y_down ;
+				int l_l = univ[y + 1][x - 1];
+				int l_m = univ[y + 1][x];
+				int l_r = univ[y + 1][x + 1];
+				int l = univ[y][x - 1];
+				int r = univ[y][x + 1];
+				int u_l = univ[y - 1][x - 1];
+				int u_m = univ[y - 1][x];
+				int u_r = univ[y - 1][x + 1];
 
-				alive = univ[y + 1][x - 1] + univ[y + 1][x] + univ[y + 1][x + 1] +
-								univ[y][x - 1] + univ[y][x + 1] +
-								univ[y - 1][x - 1] + univ[y + 1][x] + univ[y + 1][x + 1];
+				if(l_l != 0 && l_l != 1){
+					l_l = 0;
+				}
+				if(l_m != 0 && l_m != 1){
+					l_m = 0;
+				}
+				if(l_r != 0 && l_r != 1){
+					l_r = 0;
+				}
+				if(l != 0 && l != 1){
+					l = 0;
+				}
+				if(r != 0 && r != 1){
+					r = 0;
+				}
+				if(u_l != 0 && u_l != 1){
+					u_l = 0;
+				}
+				if(u_m != 0 && u_m != 1){
+					u_m = 0;
+				}
+				if(u_r != 0 && u_r != 1){
+					u_r = 0;
+				}
+				printf("Indivicuial postitions(%d, %d, %d, %d, %d, %d, %d, %d)\n", l_l, l_m, l_r, l, r, u_l, u_m, u_r);
+				alive = l_l + l_m + l_r + l + r + u_l + u_m + u_r;
 
-				new_univ[y][x] = 	(alive == 3 || ( alive == 2 && univ[y][x]) ? 1 : 0);
+				printf("Alive pos(%d, %d): %d\n", y, x, alive);
+
+				new_univ[y][x] = (alive == 3 || ( alive == 2 && univ[y][x]) ? 1 : 0);
 			}
 		}
 		
-		printf("Generation %d", g);
-		print_matrix((int *)new_univ, h, w);
-
-		int i;
-		for (i = 0; i < h; i++)
+		for (int y = 0; y < h; y++)
 		{
-			memcpy(&univ[i], &new_univ[i], sizeof(new_univ[i]));
+			for (int x = 0; x < w; x++)
+			{
+				univ[y][x] = new_univ[y][x];
+			}
 		}
 
 		print_matrix((int *)new_univ, h, w);

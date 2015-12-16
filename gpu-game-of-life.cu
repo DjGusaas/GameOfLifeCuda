@@ -1,61 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__global__ void cell_kernel(int univ[], int h, int w)
+#define NUM_THREADS 256
+
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+__global__ void cell_kernel(int univ[], int h, int w, int new_univ[])
 {
 	int id = __mul24(blockIdx.x, blockDim.x) + threadIdx.x;
-	int num_cells = h * w;
+	int size = h * w;
 
-	for (id; id < num_cells; id += blockDim.x * gridDim.x) 
+	for (id; id < size; id += blockDim.x * gridDim.x) 
 	{
+		// Neighbor positions
 		unsigned x_pos = id % w;
 		unsigned y_pos = id - x_pos;
 		unsigned x_left = (x_pos + w - 1) % w;
 		unsigned x_right = (x_pos + 1) % w;
-		unsigned y_above = (y_pos + num_cells - w) % num_cells;
-		unsigned y_below = (y_pos + num_cells) % num_cells;
-
+		unsigned y_above = (y_pos + size - w) % size;
+		unsigned y_below = (y_pos + size) % size;
+		
+		// Calculate number of alive neighbors
 		int alive = univ[x_left + y_above] + univ[x_pos + y_above] + univ[x_right + y_above] + univ[x_left + y_pos] + univ[x_right + y_pos] + univ[x_left + y_below] + univ[x_pos + y_below] + univ[x_right + y_below];
-
 		new_univ[x_pos + y_pos] = alive == 3 || (alive == 2 && univ[x_pos + y_pos]) ? 1 : 0;
 	}
 }
 
-void print_array(int univ[], int size)
+void print_array(int arr[], int size)
 {	
   printf("\n");
 
   for (int i = 0; i < size; i++)
   {
-    printf("%d", univ[i]);
+    printf("%d", arr[i]);
   }
 
   printf("\n");
 }
-
 void generate(int g, int h, int w)
 {
+	// Number of cells in universe
 	int size = h * w;
-	int univ[size];
-	
+
+	// Host(CPU) arrays
+	int h_univ[size];
+	int h_new_univ[size];
+
+	// Devide(GPU) arrays
+	int d_univ[size];
+	int d_new_univ[size]
+
+	// "Randomly" seed universe
 	for (int i = 0; i < size; i++) 
 	{
-		univ[i] = rand() % 2;
+		h_univ[i] = rand() % 2;
 	}
 
 	while(g > 0)
 	{
-		size_t t = (size) / 256;
-		unsigned blocks_count = (unsigned)std::min((size_t)32768, t);
+		// Rename t to something more descriptive
+		size_t t = (size) / NUM_THREADS;
+		unsigned blocks_count = (unsigned)min((size_t)32768, t);
 
-		d_ ;
-		d_ ;
+		cell_kernel<<<blocks_count, t>>>(d_univ, h, w, d_new_univ);
 
-		cell_kernel<<<blocks_count, 256>>>( , unsigned(w), unsigned(h), );
+		// Perform some sort memory copying from GPU to CPU
 
-		print_array(univ, size);
+		//memcpy(h_new_univ, h_univ, size);
+		print_array(h_univ, size);
 		g--;
 	}
+
+	// Release memory? 
 }
 
 int main()
@@ -72,4 +87,6 @@ int main()
 	scanf("%d", &w);
 
 	generate(g, h, w);
+
+	return 0;
 }

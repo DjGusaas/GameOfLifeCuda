@@ -1,4 +1,4 @@
-# Conway's Game of Life in Cuda
+# Conway's Game of Life in CUDA
 ### Rules
 * Any live cell with fewer than two live neighbours dies, as if caused by under-population.
 * Any live cell with two or three live neighbours lives on to the next generation.

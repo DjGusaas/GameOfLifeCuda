@@ -4,6 +4,7 @@
 #define NUM_THREADS 256
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
+
 __global__ void cell_kernel(int univ[], int h, int w, int new_univ[])
 {
 	int id = __mul24(blockIdx.x, blockDim.x) + threadIdx.x;
@@ -12,30 +13,32 @@ __global__ void cell_kernel(int univ[], int h, int w, int new_univ[])
 	for (id; id < size; id += blockDim.x * gridDim.x) 
 	{
 		// Neighbor positions
-		unsigned x_pos = id % w;
-		unsigned y_pos = id - x_pos;
-		unsigned x_left = (x_pos + w - 1) % w;
-		unsigned x_right = (x_pos + 1) % w;
-		unsigned y_above = (y_pos + size - w) % size;
-		unsigned y_below = (y_pos + size) % size;
+		unsigned x = id % w;
+		unsigned y = id - x;
+		unsigned x_l = (x + w - 1) % w;
+		unsigned x_r = (x_p + 1) % w;
+		unsigned y_u = (y + size - w) % size;
+		unsigned y_d = (y + size) % size;
 		
 		// Calculate number of alive neighbors
-		int alive = univ[x_left + y_above] + univ[x_pos + y_above] + univ[x_right + y_above] + univ[x_left + y_pos] + univ[x_right + y_pos] + univ[x_left + y_below] + univ[x_pos + y_below] + univ[x_right + y_below];
+		int alive = univ[x_l + y_u] + univ[x + y_u] + univ[x_r + y_u] + univ[x_l + y] + univ[x_r + y] + univ[x_l + y_u] + univ[x + y_d] + univ[x_r + y_d];
+
 		new_univ[x_pos + y_pos] = alive == 3 || (alive == 2 && univ[x_pos + y_pos]) ? 1 : 0;
 	}
 }
 
 void print_array(int arr[], int size)
 {	
-  printf("\n");
+	printf("\n");
 
-  for (int i = 0; i < size; i++)
-  {
-    printf("%d", arr[i]);
-  }
+	for (int i = 0; i < size; i++)
+	{
+		printf("%d", arr[i]);
+	}
 
-  printf("\n");
+	printf("\n");
 }
+
 void generate(int g, int h, int w)
 {
 	// Number of cells in universe
@@ -49,7 +52,7 @@ void generate(int g, int h, int w)
 	int d_univ[size];
 	int d_new_univ[size]
 
-	// "Randomly" seed universe
+	// Randomly seed universe
 	for (int i = 0; i < size; i++) 
 	{
 		h_univ[i] = rand() % 2;
@@ -57,7 +60,6 @@ void generate(int g, int h, int w)
 
 	while(g > 0)
 	{
-		// Rename t to something more descriptive
 		size_t t = (size) / NUM_THREADS;
 		unsigned blocks_count = (unsigned)min((size_t)32768, t);
 
@@ -69,7 +71,6 @@ void generate(int g, int h, int w)
 		print_array(h_univ, size);
 		g--;
 	}
-
 	// Release memory? 
 }
 

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void print_arr(int arr[], int size)
+void print_array(int arr[], int size)
 {
 	printf("\n");
 
@@ -16,7 +16,6 @@ void print_arr(int arr[], int size)
 
 void generate(int g, int h, int w)
 {
-	int alive;
 	int size = h * w;
 
 	int univ[size];
@@ -28,25 +27,28 @@ void generate(int g, int h, int w)
 	}
 
 	printf("Initial universe:");
-	print_arr(univ, size);
+	print_array(univ, size);
 
 	while(g > 0)
 	{
 		for (int i = 0; i < size; i++)
 		{
+			int alive = 0
+
 			unsigned x_pos = i % w;
 			unsigned y_pos = i - x_pos;
 			unsigned x_left = (x_pos + w - 1) % w;
 			unsigned x_right = (x_pos + 1) % w;
 			unsigned y_above = (y_pos + size - w) % size;
 			unsigned y_below = (y_pos + size) % size;
-		}
 
-		new_univ[y][x] = (alive == 3 || ( alive == 2 && univ[y][x]) ? 1 : 0);
-			
-		
+			alive = ;	
+
+			new_univ[i] = (alive == 3 || (alive == 2 && univ[i]) ? 1 : 0);
+		}			
+
 		memcpy(univ, new_univ, size);
-		print_matrix(univ, size);
+		print_array(univ, size);
 		g--;
 	}
 }
